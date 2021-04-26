@@ -26,6 +26,10 @@ const streak = 0;
 const totalPages = 0;
 
 
+const onReadingUpdateClick = () => {
+	//Make this render ReadingUpdater
+}
+
 
 const App = () => {
   return (
@@ -33,8 +37,8 @@ const App = () => {
     	<h1>Bookworm</h1>
   		
   		<StreakView streak={streak} totalPages={totalPages}/>
+  		<button onClick={onReadingUpdateClick}>Update read pages!</button>
   		<ReadingUpdater />
-  	{/*Later add here the menu to update reading, including which book and how many pages was read*/}
   		<Booklist books={books}/>
 
     </div>
