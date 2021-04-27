@@ -17,7 +17,7 @@ const Booklist = (props) => {
 const Book = (props) => {
 
 	return (
-		<li><b>{props.name}</b> Completion: <b>{100*props.pagesRead/props.pages}%</b></li>
+		<li><b>{props.name}</b> Completion: <b>{(100*props.pagesRead/props.pages).toFixed(1)}%</b></li>
 	)
 }
 
