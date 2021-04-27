@@ -44,7 +44,7 @@ const onReadingUpdateClick = () => {
 
   		{appState === 'start' && (<button onClick={onReadingUpdateClick}>Update read pages!</button>)}
 
-  		{appState === 'updatingReading' && (<ReadingUpdater setAppState={setAppState} setStreak={setStreak} setTotalPages={setTotalPages} streak={streak} totalPages={totalPages} books={books}/>) }
+  		{appState === 'updatingReading' && (<ReadingUpdater setAppState={setAppState} setStreak={setStreak} setTotalPages={setTotalPages} streak={streak} totalPages={totalPages} books={books} setBooks={setBooks}/>) }
 
   		<Booklist books={books}/>
 
