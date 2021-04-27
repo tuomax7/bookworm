@@ -13,16 +13,29 @@ const ReadingUpdater = (props) => {
 
 	//Function declarations
 	const submitReading = () => {
-		props.setStreak(props.streak+1);
-		props.setTotalPages(props.totalPages+pagesRead);
-
 		const knownBook = props.books.find(book => book.name === bookName);
 
-		if(knownBook){
+
+		//ACCOUNT FOR NEGATIVE PAGE COUNT!
+
+		if(!knownBook){
+			//Book not found
+			window.alert('Book not found!');
+
+		}else if (knownBook.pagesRead+pagesRead <= knownBook.pages){
+			//Book found and pages read does not exceed total page count of book
 			knownBook.pagesRead += pagesRead;
+
+			props.setStreak(props.streak+1);
+			props.setTotalPages(props.totalPages+pagesRead);
+
+		}else{
+			//Book found but pages read exceeds total page count of book
+			window.alert('Pages read so far is greater than the total page count of book!')
 		}
 
 		props.setAppState('start');
+
 	}
 
 	return (
