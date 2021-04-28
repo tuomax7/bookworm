@@ -50,7 +50,8 @@ const ReadingUpdater = (props) => {
 				window.alert('Insert a book name!')
 				return;
 
-			}else if(totalPagesOfBook <= 0 || pagesRead <= 0 || pagesRead > totalPagesOfBook){
+			}else if(isNaN(totalPagesOfBook) || isNaN(pagesRead) || 
+				totalPagesOfBook <= 0 || pagesRead <= 0 || pagesRead > totalPagesOfBook){
 				//Invalid book page count
 				window.alert('Invalid page count!')
 				return;
@@ -67,7 +68,7 @@ const ReadingUpdater = (props) => {
 			}
 		}else{
 			//Selected book
-			if(pagesRead <= 0 || knownBook.pagesRead+pagesRead > knownBook.pages){
+			if(isNaN(pagesRead) || pagesRead <= 0 || knownBook.pagesRead+pagesRead > knownBook.pages){
 				//Invalid book page count
 				window.alert('Invalid page count!')
 				return;
