@@ -28,12 +28,16 @@ const App = () => {
 	  }
   ]);
 
-  const [ latestDateRead, setLatestDateRead ] = useState(new Date("April 27, 2021"));
-  const [ readByDate, setReadByDate ] = useState(
-  	new Date(latestDateRead.getFullYear(), latestDateRead.getMonth(), latestDateRead.getDate()+1));
+  //Generates today's date in our focused format
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
+  
+  const [ todayDate ] = useState(today);
+
+  const [ readByDate, setReadByDate ] = useState(
+  	new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate()));
+
 
   //Function declarations
 
@@ -44,11 +48,11 @@ const App = () => {
 
   //Handles streak resetting
   useEffect(() => {
-  	if(today > readByDate){
+  	if(todayDate > readByDate){
   		window.alert('You missed a day of reading, so your streak resets!');
   		setStreak(0);
   	}
-  }, [])
+  }, [todayDate, readByDate])
 
 
   return (
@@ -60,7 +64,7 @@ const App = () => {
   		{appState === 'start' && (<button onClick={onReadingUpdateClick}>Update read pages!</button>)}
 
   		{appState === 'updatingReading' && (<ReadingUpdater setAppState={setAppState} setStreak={setStreak} setTotalPages={setTotalPages} streak={streak} totalPages={totalPages} 
-  			books={books} setBooks={setBooks} todayDate={today} readByDate={readByDate}/>) }
+  			books={books} setBooks={setBooks} todayDate={todayDate} readByDate={readByDate} setReadByDate={setReadByDate}/>) }
 
   		<Booklist books={books}/>
 

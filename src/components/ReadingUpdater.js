@@ -77,7 +77,28 @@ const ReadingUpdater = (props) => {
 		}
 
 		//Handle stats and UI updating
-		props.setStreak(props.streak+1);
+
+		if(props.streak === 0){
+
+			//Streak updating after a reset
+
+			props.setStreak(props.streak+1);
+
+			props.setReadByDate(new Date(props.todayDate.getFullYear(), 
+				props.todayDate.getMonth(), props.todayDate.getDate()+1));
+
+		}else if(props.todayDate.getFullYear() === props.readByDate.getFullYear() &&
+			props.todayDate.getMonth() === props.readByDate.getMonth() &&
+			props.todayDate.getDate() === props.readByDate.getDate()){
+
+			//Normal streak updating handling
+
+			props.setStreak(props.streak+1);
+
+			props.setReadByDate(new Date(props.readByDate.getFullYear(), 
+				props.readByDate.getMonth(), props.readByDate.getDate()+1));
+		}
+	
 		props.setTotalPages(props.totalPages+pagesRead);
 		setUpdatingState('start');
 		props.setAppState('start');
