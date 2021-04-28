@@ -13,6 +13,7 @@ const App = () => {
 
 //State declarations
 const [ appState, setAppState ] = useState('start');
+const [ latestDayRead, setLatestDayRead ] = useState(new Date());
 const [ streak, setStreak ] = useState(0);
 const [ totalPages, setTotalPages ] = useState(0);
 const [ books, setBooks ] = useState([
