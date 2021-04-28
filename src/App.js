@@ -28,7 +28,7 @@ const App = () => {
 	  }
   ]);
 
-  //Generates today's date in our focused format
+  //Date declarations
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -46,7 +46,7 @@ const App = () => {
 	  setAppState('updatingReading')
   }
 
-  //Handles streak resetting
+  //Handles streak resetting ONCE when app is first rendered
   useEffect(() => {
   	if(todayDate > readByDate){
   		window.alert('You missed a day of reading, so your streak resets!');
