@@ -35,6 +35,7 @@ const App = () => {
   
   const [ todayDate ] = useState(today);
 
+  //Set as today for development purposes
   const [ readByDate, setReadByDate ] = useState(
   	new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate()));
 
