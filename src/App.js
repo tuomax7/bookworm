@@ -7,6 +7,7 @@ import './App.css';
 import Booklist from './components/Booklist.js';
 import StreakView from './components/StreakView.js';
 import ReadingUpdater from './components/ReadingUpdater.js';
+import ReadingGoal from './components/ReadingGoal.js';
 
 
 const App = () => {
@@ -14,6 +15,8 @@ const App = () => {
 //State declarations
   const [ appState, setAppState ] = useState('start');
   const [ streak, setStreak ] = useState(0);
+  const [ readingGoal, setReadingGoal ] = useState(10);
+  const [ pagesReadToday, setPagesReadToday ] = useState(0);
   const [ totalPages, setTotalPages ] = useState(0);
   const [ books, setBooks ] = useState([
 	  {
@@ -43,8 +46,13 @@ const App = () => {
   //Function declarations
 
   const onReadingUpdateClick = () => {
-	  //Make this render ReadingUpdater
+	  //Renders ReadingUpdater
 	  setAppState('updatingReading')
+  }
+
+  const onGoalUpdateClick = () => {
+  		//Renders ReadingGoal
+  		setAppState('updatingGoal');
   }
 
   //Handles streak resetting ONCE when app is first rendered
@@ -60,12 +68,21 @@ const App = () => {
     <div>
     	<h1>Bookworm</h1>
   		
-  		<StreakView streak={streak} totalPages={totalPages}/>
+  		<StreakView streak={streak} totalPages={totalPages} readingGoal={readingGoal} pagesReadToday={pagesReadToday}/>
 
-  		{appState === 'start' && (<button onClick={onReadingUpdateClick}>Update read pages!</button>)}
+  		<div>
+  			{appState === 'start' && (<button onClick={onReadingUpdateClick}>Update read pages!</button>)}
 
-  		{appState === 'updatingReading' && (<ReadingUpdater setAppState={setAppState} setStreak={setStreak} setTotalPages={setTotalPages} streak={streak} totalPages={totalPages} 
-  			books={books} setBooks={setBooks} todayDate={todayDate} readByDate={readByDate} setReadByDate={setReadByDate}/>) }
+  			{appState === 'updatingReading' && (<ReadingUpdater setAppState={setAppState} setStreak={setStreak} setTotalPages={setTotalPages} streak={streak} totalPages={totalPages} 
+  			books={books} setBooks={setBooks} todayDate={todayDate} readByDate={readByDate} setReadByDate={setReadByDate} pagesReadToday={pagesReadToday} setPagesReadToday={setPagesReadToday} readingGoal={readingGoal}/>) }
+  		</div>
+
+  		<div>
+  			{appState === 'start' && (<button onClick={onGoalUpdateClick}>Set reading goal!</button>)}
+
+  			{appState === 'updatingGoal' && (<ReadingGoal readingGoal={readingGoal} setReadingGoal={setReadingGoal} setAppState={setAppState}/>)}
+  		</div>
+
 
   		<Booklist books={books}/>
 
