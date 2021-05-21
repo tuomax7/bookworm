@@ -1,6 +1,9 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
+
 let books = [
   {
     id: 1,
@@ -16,6 +19,7 @@ let books = [
   }
 ]
 
+//GETS
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
@@ -28,12 +32,36 @@ app.get('/api/books/:id', (request, response) => {
   const id = Number(request.params.id)
   const book = books.find(book => book.id === id)
 
-  if(book){
-  	response.json(book)
-  }else{
-  	response.status(404).end()
-  }
 })
+
+
+//POSTS
+app.post('/api/books', (request, response) => {
+
+  //Creates ID
+  const maxId = books.length > 0
+    ? Math.max(...books.map(n => n.id)) 
+    : 0
+
+
+
+  const book = request.body
+  book.id = maxId + 1
+
+  books = books.concat(book)
+
+  response.json(book)
+})
+
+
+//DELETES
+app.delete('/api/books/:id', (request, response) => {
+  const id = Number(request.params.id)
+  books = books.filter(book => book.id !== id)
+
+  response.status(204).end()
+})
+
 
 const PORT = 3001
 app.listen(PORT, () => {
