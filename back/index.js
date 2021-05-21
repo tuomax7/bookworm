@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const mongoose = require('mongoose')
+require('dotenv').config()
 
 app.use(cors())
 app.use(express.json())
@@ -21,13 +23,18 @@ let books = [
   }
 ]
 
-//GETS
-app.get('/', (req, res) => {
-  res.send('<h1>Hello World!</h1>')
-})
+//MONGOOSE
+const Book = require('./models/book')
 
-app.get('/api/books', (req, res) => {
-  res.json(books)
+
+
+
+//GETS
+
+app.get('/api/books', (request, response) => {
+  Book.find({}).then(books => {
+  	response.json(books)
+  })
 })
 
 app.get('/api/books/:id', (request, response) => {
@@ -64,8 +71,7 @@ app.delete('/api/books/:id', (request, response) => {
   response.status(204).end()
 })
 
-
-const PORT = 3001
+const PORT = process.env.PORT;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
