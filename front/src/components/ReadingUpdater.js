@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import axios from 'axios';
 
 const ReadingUpdater = (props) => {
 
@@ -27,6 +28,7 @@ const ReadingUpdater = (props) => {
 
 
 	//The heart of reading updating
+
 
 	const submitReading = () => {
 
@@ -70,7 +72,13 @@ const ReadingUpdater = (props) => {
 					'pagesRead': pagesRead
 				}
 
-				props.setBooks(props.books.concat(newBook));
+				//props.setBooks(props.books.concat(newBook));
+
+				axios
+    				.post('http://localhost:3001/api/books', newBook)
+    				.then(response => {
+      				 props.setBooks(props.books.concat(response.data))
+    			})
 
 			}
 		}else{
@@ -83,6 +91,11 @@ const ReadingUpdater = (props) => {
 			}
 
 			knownBook.pagesRead += pagesRead;
+			/*
+			axios.put(`http://localhost:3001/books/${knownBook.id}`, knownBook).then(response => {
+    			props.setBooks(props.books.map(book => book.id !== knownBook.id ? book : response.data))
+  			})
+  			*/
 
 		}
 
@@ -121,6 +134,7 @@ const ReadingUpdater = (props) => {
 		props.setTotalPages(props.totalPages+pagesRead);
 		setUpdatingState('start');
 		props.setAppState('start');
+
 	}
 
 	return (

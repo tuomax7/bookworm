@@ -1,21 +1,23 @@
 const express = require('express')
 const app = express()
+const cors = require('cors')
 
+app.use(cors())
 app.use(express.json())
 
 
 let books = [
   {
-    id: 1,
     name: "Bookname 1",
     pages: 100,
-    pagesRead: 0
+    pagesRead: 0,
+    id: 1
   },
   {
-    id: 2,
     name: "Bookname 2",
     pages: 200,
-    pagesRead: 0
+    pagesRead: 0,
+    id: 2
   }
 ]
 
@@ -31,7 +33,7 @@ app.get('/api/books', (req, res) => {
 app.get('/api/books/:id', (request, response) => {
   const id = Number(request.params.id)
   const book = books.find(book => book.id === id)
-
+  console.log(book);
 })
 
 

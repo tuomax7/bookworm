@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import './App.css';
 
@@ -20,18 +21,15 @@ const App = () => {
   const [ totalPages, setTotalPages ] = useState(0);
 
   //Contains sample data for dev purposes
-  const [ books, setBooks ] = useState([
-	  {
-		  'name': 'Bookname 1',
-		  'pages': 100,
-		  'pagesRead': 0
-	  },
-	  {
-		  'name': 'Bookname 2',
-		  'pages': 200,
-		  'pagesRead': 0
-	  }
-  ]);
+  const [ books, setBooks ] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/api/books')
+      .then(response => {
+        setBooks(response.data)
+      })
+  }, [])
 
 
   //Date declarations (states)
