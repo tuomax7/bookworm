@@ -38,38 +38,57 @@ app.get('/api/books', (request, response) => {
 })
 
 app.get('/api/books/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const book = books.find(book => book.id === id)
-  console.log(book);
+  Book.findById(request.params.id).then(book => {
+    response.json(book)
+  })
 })
 
 
 //POSTS
+
 app.post('/api/books', (request, response) => {
+  const body = request.body
 
-  //Creates ID
-  const maxId = books.length > 0
-    ? Math.max(...books.map(n => n.id)) 
-    : 0
+  const book = new Book({
+    name: body.name,
+    pages: body.pages,
+    pagesRead: body.pagesRead
+  })
+
+  book.save().then(savedBook => {
+    response.json(savedBook)
+  })
+})
 
 
+//PUTS
+app.put('/api/books/:id', (request, response, next) => {
+  const body = request.body
 
-  const book = request.body
-  book.id = maxId + 1
+  const book = {
+    name: body.name,
+    pages: body.pages,
+    pagesRead: body.pagesRead
+  }
 
-  books = books.concat(book)
-
-  response.json(book)
+  Book.findByIdAndUpdate(request.params.id, book, { new: true })
+    .then(updatedBook => {
+      response.json(updatedBook)
+    })
 })
 
 
 //DELETES
-app.delete('/api/books/:id', (request, response) => {
-  const id = Number(request.params.id)
-  books = books.filter(book => book.id !== id)
 
-  response.status(204).end()
+app.delete('/api/books/:id', (request, response) => {
+  Book.findByIdAndRemove(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
 })
+
+
+
 
 const PORT = process.env.PORT;
 app.listen(PORT, () => {

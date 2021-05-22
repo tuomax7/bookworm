@@ -8,8 +8,7 @@ if (process.argv.length<3) {
 
 const password = process.argv[2]
 
-const url =
-  `mongodb+srv://bookworm_admin:${password}@bookwormcluster.pbwp8.mongodb.net/bookworm?retryWrites=true&w=majority`
+const url = process.env.MONGODB_URI;
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
 
@@ -27,9 +26,3 @@ const book = new Book({
     pagesRead: 0,
 })
 
-Book.find({}).then(result => {
-  result.forEach(book => {
-    console.log(book)
-  })
-  mongoose.connection.close()
-})
