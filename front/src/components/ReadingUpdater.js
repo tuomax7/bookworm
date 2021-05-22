@@ -91,11 +91,11 @@ const ReadingUpdater = (props) => {
 			}
 
 			knownBook.pagesRead += pagesRead;
-			/*
-			axios.put(`http://localhost:3001/books/${knownBook.id}`, knownBook).then(response => {
+			
+			console.log(knownBook.id);
+			axios.put(`http://localhost:3001/api/books/${knownBook.id}`, knownBook).then(response => {
     			props.setBooks(props.books.map(book => book.id !== knownBook.id ? book : response.data))
   			})
-  			*/
 
 		}
 

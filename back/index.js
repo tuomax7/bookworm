@@ -7,26 +7,8 @@ require('dotenv').config()
 app.use(cors())
 app.use(express.json())
 
-
-let books = [
-  {
-    name: "Bookname 1",
-    pages: 100,
-    pagesRead: 0,
-    id: 1
-  },
-  {
-    name: "Bookname 2",
-    pages: 200,
-    pagesRead: 0,
-    id: 2
-  }
-]
-
 //MONGOOSE
 const Book = require('./models/book')
-
-
 
 
 //GETS
