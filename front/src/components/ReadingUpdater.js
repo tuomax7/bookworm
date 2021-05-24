@@ -72,8 +72,6 @@ const ReadingUpdater = (props) => {
 					'pagesRead': pagesRead
 				}
 
-				//props.setBooks(props.books.concat(newBook));
-
 				axios
     				.post('http://localhost:3001/api/books', newBook)
     				.then(response => {
@@ -92,7 +90,6 @@ const ReadingUpdater = (props) => {
 
 			knownBook.pagesRead += pagesRead;
 			
-			console.log(knownBook.id);
 			axios.put(`http://localhost:3001/api/books/${knownBook.id}`, knownBook).then(response => {
     			props.setBooks(props.books.map(book => book.id !== knownBook.id ? book : response.data))
   			})
@@ -100,15 +97,27 @@ const ReadingUpdater = (props) => {
 		}
 
 		//Handle stats and UI updating
+		const knownStats = {
+			latestDayRead: props.latestDayRead,
+			readByDate: props.readByDate,
+			readingGoal: props.readingGoal,
+			totalPages: props.totalPages,
+			pagesReadToday: props.pagesReadToday,
+			streak: props.streak
+		}
+
 
 		if(props.streak === 0 && props.pagesReadToday+pagesRead >= props.readingGoal){
 
 			//Streak updating after a reset
+			knownStats.streak++;
+			props.setStreak(knownStats.streak);
 
-			props.setStreak(props.streak+1);
+			knownStats.readByDate = 
+			new Date(props.todayDate.getFullYear(), 
+				props.todayDate.getMonth(), props.todayDate.getDate()+1);
 
-			props.setReadByDate(new Date(props.todayDate.getFullYear(), 
-				props.todayDate.getMonth(), props.todayDate.getDate()+1));
+			props.setReadByDate(knownStats.readByDate);
 
 
 		}else if(props.todayDate.getFullYear() === props.readByDate.getFullYear() &&
@@ -117,21 +126,32 @@ const ReadingUpdater = (props) => {
 
 			//Normal streak updating handling
 
-			props.setStreak(props.streak+1);
+			knownStats.streak++;
+			props.setStreak(knownStats.streak);
 
-			props.setReadByDate(new Date(props.readByDate.getFullYear(), 
-				props.readByDate.getMonth(), props.readByDate.getDate()+1));
+			knownStats.readByDate = 
+			new Date(props.readByDate.getFullYear(), 
+				props.readByDate.getMonth(), props.readByDate.getDate()+1);
+
+			props.setReadByDate(knownStats.readByDate);
 		}
 
 		//Update latestdayread to keep track of pages read/day
 
-		props.setLatestDayRead(new Date(props.todayDate.getFullYear(),
-			props.todayDate.getMonth(), props.todayDate.getDate()));
+		knownStats.latestDayRead = 
+		new Date(props.todayDate.getFullYear(),
+			props.todayDate.getMonth(), props.todayDate.getDate());
+
+		props.setLatestDayRead(knownStats.latestDayRead);
 
 
 		//Update pages read (total+daily) and update states of app
-		props.setPagesReadToday(props.pagesReadToday+pagesRead);
-		props.setTotalPages(props.totalPages+pagesRead);
+		knownStats.pagesReadToday += pagesRead;
+		knownStats.totalPages += pagesRead;
+
+		props.setPagesReadToday(knownStats.pagesReadToday);
+		props.setTotalPages(knownStats.totalPages);
+
 		setUpdatingState('start');
 		props.setAppState('start');
 

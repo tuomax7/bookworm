@@ -29,6 +29,7 @@ const App = () => {
   
   const [ todayDate ] = useState(today);
 
+
   //Set as today for development purposes
   const [ readByDate, setReadByDate ] = useState(
   	new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate()));
@@ -53,10 +54,13 @@ const App = () => {
       .get('http://localhost:3001/api/stats')
       .then(response => {
 
-        const stats = response.data;
+        const stats = response.data[0];
 
-        setLatestDayRead(stats.latestDayRead);
-        setReadByDate(stats.readByDate);
+        const decodedReadByDate = new Date(stats.readByDate);
+        const decodedLatestDayRead = new Date(stats.latestDayRead);
+
+        setLatestDayRead(decodedLatestDayRead);
+        setReadByDate(decodedReadByDate);
         setReadingGoal(stats.readingGoal);
         setTotalPages(stats.totalPages);
 
@@ -78,18 +82,6 @@ const App = () => {
     })
   }, [todayDate, readByDate, latestDayRead])
 
-
-  /*
-   useEffect(() => {
-    if(todayDate > latestDayRead){
-      setPagesReadToday(0);
-    }
-    if(todayDate > readByDate){
-      window.alert('You missed a day of reading, so your streak resets!');
-      setStreak(0);
-    }
-  }, [todayDate, readByDate, latestDayRead])
-  */
 
   //Function declarations
 
