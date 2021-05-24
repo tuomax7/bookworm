@@ -8,8 +8,21 @@ app.use(cors())
 app.use(express.json())
 
 //MONGOOSE
-const Book = require('./models/book')
 
+const url = process.env.MONGODB_URI
+
+mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false, useCreateIndex: true })
+  .then(result => {
+    console.log('connected to MongoDB')
+  })
+  .catch((error) => {
+    console.log('error connecting to MongoDB:', error.message)
+  })
+
+
+const Book = require('./models/book');
+
+const Stats = require('./models/stats');
 
 //GETS
 
@@ -22,6 +35,12 @@ app.get('/api/books', (request, response) => {
 app.get('/api/books/:id', (request, response) => {
   Book.findById(request.params.id).then(book => {
     response.json(book)
+  })
+})
+
+app.get('/api/stats', (request, response) => {
+  Stats.find({}).then(stats => {
+  	response.json(stats)
   })
 })
 
@@ -39,6 +58,23 @@ app.post('/api/books', (request, response) => {
 
   book.save().then(savedBook => {
     response.json(savedBook)
+  })
+})
+
+app.post('/api/stats', (request, response) => {
+  const body = request.body
+
+  const stats = new Stats({
+    latestDayRead: body.latestDayRead,
+  	readByDate: body.readByDate,
+  	readingGoal: body.readingGoal,
+  	totalPages: body.totalPages,
+  	pagesReadToday: body.pagesReadToday,
+  	streak: body.streak
+  })
+
+  stats.save().then(savedStats => {
+    response.json(savedStats)
   })
 })
 
