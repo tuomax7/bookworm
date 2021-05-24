@@ -19,17 +19,7 @@ const App = () => {
   const [ readingGoal, setReadingGoal ] = useState(10);
   const [ pagesReadToday, setPagesReadToday ] = useState(0);
   const [ totalPages, setTotalPages ] = useState(0);
-
-  //Contains sample data for dev purposes
   const [ books, setBooks ] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get('http://localhost:3001/api/books')
-      .then(response => {
-        setBooks(response.data)
-      })
-  }, [])
 
 
   //Date declarations (states)
@@ -47,6 +37,59 @@ const App = () => {
   	new Date(todayDate.getFullYear(), todayDate.getMonth(), todayDate.getDate()));
 
 
+
+  //Functions for getting data from backend
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/api/books')
+      .then(response => {
+        setBooks(response.data);
+    })
+  }, [])
+
+  useEffect(() => {
+    axios
+      .get('http://localhost:3001/api/stats')
+      .then(response => {
+
+        const stats = response.data;
+
+        setLatestDayRead(stats.latestDayRead);
+        setReadByDate(stats.readByDate);
+        setReadingGoal(stats.readingGoal);
+        setTotalPages(stats.totalPages);
+
+        //Handles resetting pages read today
+        if(todayDate > latestDayRead){
+          setPagesReadToday(0);
+        }else{
+          setPagesReadToday(stats.pagesReadToday);
+        }
+
+        //Handles streak resetting
+        if(todayDate > readByDate){
+          window.alert('You missed a day of reading, so your streak resets!');
+          setStreak(0);
+        }else{
+          setStreak(stats.streak);
+        }
+
+    })
+  }, [todayDate, readByDate, latestDayRead])
+
+
+  /*
+   useEffect(() => {
+    if(todayDate > latestDayRead){
+      setPagesReadToday(0);
+    }
+    if(todayDate > readByDate){
+      window.alert('You missed a day of reading, so your streak resets!');
+      setStreak(0);
+    }
+  }, [todayDate, readByDate, latestDayRead])
+  */
 
   //Function declarations
 
