@@ -39,8 +39,14 @@ app.get('/api/books/:id', (request, response) => {
 })
 
 app.get('/api/stats', (request, response) => {
-  Stats.find({}).then(stats => {
-  	response.json(stats)
+  Stats.find({}).then(statCollection => {
+  	response.json(statCollection)
+  })
+})
+
+app.get('/api/stats/:id', (request, response) => {
+  Stats.findById(request.params.id).then(stats => {
+    response.json(stats)
   })
 })
 
@@ -80,7 +86,7 @@ app.post('/api/stats', (request, response) => {
 
 
 //PUTS
-app.put('/api/books/:id', (request, response, next) => {
+app.put('/api/books/:id', (request, response) => {
   const body = request.body
 
   const book = {
@@ -92,6 +98,24 @@ app.put('/api/books/:id', (request, response, next) => {
   Book.findByIdAndUpdate(request.params.id, book, { new: true })
     .then(updatedBook => {
       response.json(updatedBook)
+    })
+})
+
+app.put('/api/stats/:id', (request, response) => {
+  const body = request.body
+
+  const stats = {
+    latestDayRead: body.latestDayRead,
+  	readByDate: body.readByDate,
+  	readingGoal: body.readingGoal,
+  	totalPages: body.totalPages,
+  	pagesReadToday: body.pagesReadToday,
+  	streak: body.streak
+  }
+
+  Stats.findByIdAndUpdate(request.params.id, stats, { new: true })
+    .then(updatedStats => {
+      response.json(updatedStats)
     })
 })
 
