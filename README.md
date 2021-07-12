@@ -8,4 +8,4 @@ An app that tracks the following:
   
   * Reading streak (you set a goal of X pages/day and try to stick to it)
   
-Tuomas Nummela 26.4.2021
+Tuomas Nummela 12.7.2021
